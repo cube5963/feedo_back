@@ -1,0 +1,8 @@
+{
+    "radio":["aaa","bbb","ccc","ddd"],
+    "checkbox":["aaa","bbb","ccc","ddd"],
+    "slider":["max","min","step"],
+    "text":[],
+    "two_choice":["aaa","bbb"],
+    "star_rating":["max","min","step"]
+}
