@@ -7,6 +7,10 @@ import { LoginInput } from './dto/login.input';
 export class AccountResolver {
   constructor(private readonly accountService: AccountService) {}
 
+  /**
+   *
+   * @returns ユーザーがいるかどうかを確認するテストクエリのレスポンス
+   */
   @Query(() => String)
   async testQuery() {
     return 'Test query response';
