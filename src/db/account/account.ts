@@ -2,10 +2,6 @@ export class Account {
   constructor(
     public id: number,
     public loginid: string,
-    private password: string,
+    public password?: string,
   ) {}
-
-  getPassword() {
-    return this.password;
-  }
 }

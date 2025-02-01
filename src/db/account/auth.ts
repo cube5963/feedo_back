@@ -13,7 +13,7 @@ export class Auth {
     const user = await this.account.checkUser(loginid);
     if (!user) return null;
 
-    const isValid = await Password.compare(password, user.getPassword());
+    const isValid = await Password.compare(password, user.password);
     return isValid ? user : null;
   }
 }

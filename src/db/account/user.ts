@@ -13,6 +13,6 @@ export class User {
     const user = await prisma.user.create({
       data: { loginid, password: hashdPassword },
     });
-    return new Account(user.id, user.loginid, user.password);
+    return { id: user.id, loginid: user.loginid } as Omit<Account, 'password'>;
   }
 }

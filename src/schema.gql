@@ -7,15 +7,25 @@ type AuthResponse {
   loginid: String!
 }
 
+input CreateUserInput {
+  loginid: String!
+  password: String!
+}
+
 input LoginInput {
   loginid: String!
   password: String!
 }
 
 type Mutation {
+  createUser(createuserinput: CreateUserInput!): User!
   login(loginInput: LoginInput!): AuthResponse!
 }
 
 type Query {
   testQuery: String!
+}
+
+type User {
+  loginid: String!
 }
