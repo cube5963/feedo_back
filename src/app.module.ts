@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AccountModule } from './account/account.module';
+import { SurveyModule } from './survey/survey.module';
+import { SurveyModule } from './survey/survey.module';
 import * as path from 'path';
 
 @Module({
@@ -12,6 +14,7 @@ import * as path from 'path';
       sortSchema: true,
     }),
     AccountModule,
+    SurveyModule,
   ],
 })
 export class AppModule {}
