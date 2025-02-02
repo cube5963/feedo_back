@@ -1,11 +1,9 @@
-export class Question {
+export class QuestionModule {
   constructor(
     public surveyId: number,
     public title: string,
-    public description: string,
     public order: number,
-    public type: string,
-    public questionType: QuestionType,
+    public type: QuestionType,
     public content: any,
   ) {}
 }

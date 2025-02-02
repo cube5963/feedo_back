@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateSurveyInput {
@@ -20,10 +20,8 @@ export class QuestionInput {
   @Field()
   title: string;
 
-  @Field()
-  type: string;
   @Field(() => QuestionType)
-  questionType: QuestionType;
+  type: QuestionType;
 
   @Field()
   content: string;
@@ -37,3 +35,7 @@ export enum QuestionType {
   TWO_CHOICE = 'TWO_CHOICE',
   STAR_RATING = 'STAR_RATING',
 }
+
+registerEnumType(QuestionType, {
+  name: 'QuestionType',
+});

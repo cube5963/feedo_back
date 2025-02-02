@@ -1,11 +1,11 @@
-import { Question } from './question';
+import { QuestionModule } from './question';
 
-export class Survey {
+export class SurveyModule {
   constructor(
     public id: string,
     public title: string,
     public description: string,
     public userId: string,
-    public questions: Question[],
+    public questions: QuestionModule[],
   ) {}
 }
