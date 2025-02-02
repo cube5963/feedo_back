@@ -25,13 +25,21 @@ input LoginInput {
 }
 
 type Mutation {
-  createSurvey(createsurveyinput: CreateSurveyInput!): Boolean!
+  createSurvey(createsurveyinput: CreateSurveyInput!): Int!
   createUser(createuserinput: CreateUserInput!): User!
   login(loginInput: LoginInput!): AuthResponse!
 }
 
 type Query {
+  getSurvey(surveyid: Float!): Survey!
   testQuery: String!
+}
+
+type Question {
+  content: [String!]!
+  id: Float!
+  title: String!
+  type: String!
 }
 
 input QuestionInput {
@@ -47,6 +55,12 @@ enum QuestionType {
   STAR_RATING
   TEXTBOX
   TWO_CHOICE
+}
+
+type Survey {
+  description: String!
+  questions: [Question!]!
+  title: String!
 }
 
 type User {

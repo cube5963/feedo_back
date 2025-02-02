@@ -28,5 +28,6 @@ export async function create(survey: {
   for (const q of questions) {
     await questionCreate(q.title, q.surveyId, q.order, q.type, q.content);
   }
-  console.log(questions);
+
+  return surveyid;
 }

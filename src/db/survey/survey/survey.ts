@@ -23,3 +23,30 @@ export async function surveyCreate(
   });
   return survey.id;
 }
+
+export async function getSurvey(surveyid: number) {
+  const survey = await prisma.survey.findUnique({
+    where: {
+      id: surveyid,
+    },
+    include: {
+      questions: true,
+    },
+  });
+
+  const response = {
+    title: survey.title,
+    description: survey.description,
+    questions: survey.questions.map((q) => ({
+      id: q.id,
+      title: q.title,
+      type: q.type,
+      content:
+        typeof q.content === 'string' ? JSON.parse(q.content) : q.content,
+    })),
+  };
+
+  console.log(response);
+
+  return response;
+}
