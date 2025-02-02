@@ -1,5 +1,6 @@
 import { QuestionModule, QuestionType } from '../module/question';
 import { surveyCreate } from './survey';
+import { questionCreate } from './question';
 
 export async function create(survey: {
   title: string;
@@ -24,5 +25,8 @@ export async function create(survey: {
       ),
   );
 
+  for (const q of questions) {
+    await questionCreate(q.title, q.surveyId, q.order, q.type, q.content);
+  }
   console.log(questions);
 }

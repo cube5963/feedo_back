@@ -35,7 +35,6 @@ model Question {
   survey      Survey       @relation(fields: [surveyId], references: [id])
   surveyId    Int
   title       String
-  description String?
   type        QuestionType
   order       Int
   content     Json
