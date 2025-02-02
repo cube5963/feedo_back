@@ -35,6 +35,7 @@ export async function getSurvey(surveyid: number) {
   });
 
   const response = {
+    id: survey.id,
     title: survey.title,
     description: survey.description,
     questions: survey.questions.map((q) => ({
@@ -45,8 +46,6 @@ export async function getSurvey(surveyid: number) {
         typeof q.content === 'string' ? JSON.parse(q.content) : q.content,
     })),
   };
-
-  console.log(response);
 
   return response;
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { authService, accountService } from 'src/db/account';
+import { getSurvey } from 'src/db/account/get.survey';
 
 @Injectable()
 export class AccountService {
@@ -20,5 +21,9 @@ export class AccountService {
     const token = this.jwtService.sign({ userId: login.loginid });
 
     return { accessToken: token, loginid: login.loginid };
+  }
+
+  async getUser(loginid: string) {
+    return await getSurvey(loginid);
   }
 }

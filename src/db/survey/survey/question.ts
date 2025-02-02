@@ -1,4 +1,4 @@
-import { QuestionType } from '../module/question';
+import { QuestionType } from '../model/question';
 import prisma from 'src/db/db.service';
 
 export async function questionCreate(

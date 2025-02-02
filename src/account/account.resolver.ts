@@ -4,6 +4,7 @@ import { AuthResponse } from './dto/auth-response';
 import { LoginInput } from './dto/login.input';
 import { User } from './dto/user.model';
 import { CreateUserInput } from './dto/createUser.dto';
+import { UserSurvey } from './dto/query';
 
 @Resolver()
 export class AccountResolver {
@@ -13,9 +14,9 @@ export class AccountResolver {
    *
    * @returns ユーザーがいるかどうかを確認するテストクエリのレスポンス
    */
-  @Query(() => String)
-  async testQuery() {
-    return 'Test query response';
+  @Query(() => [UserSurvey])
+  async getUserSurvey(@Args('loginid') loginid: string): Promise<UserSurvey[]> {
+    return this.accountService.getUser(loginid);
   }
 
   @Mutation(() => User)

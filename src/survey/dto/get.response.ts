@@ -19,6 +19,9 @@ export class Question {
 @ObjectType()
 export class Survey {
   @Field()
+  id: number;
+
+  @Field()
   title: string;
 
   @Field()

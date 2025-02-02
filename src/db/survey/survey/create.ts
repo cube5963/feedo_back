@@ -1,4 +1,4 @@
-import { QuestionModule, QuestionType } from '../module/question';
+import { QuestionModule, QuestionType } from '../model/question';
 import { surveyCreate } from './survey';
 import { questionCreate } from './question';
 
