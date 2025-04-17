@@ -1,4 +1,0 @@
-nest generate module nest
-nest generate resource nest --module nest
-nest generate service nest
-nest generate controller nest
