@@ -1,10 +1,16 @@
 basePath: /
 definitions:
-  user.LoginResponse:
+  login.LoginResponse:
     properties:
       token:
-        example: eyJhbGciOijiwzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIl0sImV4cCI6MTc0NTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg
+        example: eyJhbGciOijiwzIJNviIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIsdvssImV4cCI6MTMIJNTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg
         type: string
+    type: object
+  login.VerifyResponse:
+    properties:
+      verify:
+        example: true
+        type: boolean
     type: object
 host: localhost:5000
 info:
@@ -37,8 +43,30 @@ paths:
         "200":
           description: Returns JWT token
           schema:
-            $ref: '#/definitions/user.LoginResponse'
+            $ref: '#/definitions/login.LoginResponse'
       summary: User login endpoint
+      tags:
+      - user
+  /user/verify:
+    post:
+      consumes:
+      - application/json
+      description: This is a user verify endpoint
+      parameters:
+      - description: Token
+        in: body
+        name: token
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns verification result
+          schema:
+            $ref: '#/definitions/login.VerifyResponse'
+      summary: User verify endpoint
       tags:
       - user
 swagger: "2.0"

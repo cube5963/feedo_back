@@ -52,7 +52,41 @@ const docTemplate = `{
                     "200": {
                         "description": "Returns JWT token",
                         "schema": {
-                            "$ref": "#/definitions/user.LoginResponse"
+                            "$ref": "#/definitions/login.LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/verify": {
+            "post": {
+                "description": "This is a user verify endpoint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "User verify endpoint",
+                "parameters": [
+                    {
+                        "description": "Token",
+                        "name": "token",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns verification result",
+                        "schema": {
+                            "$ref": "#/definitions/login.VerifyResponse"
                         }
                     }
                 }
@@ -60,12 +94,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "user.LoginResponse": {
+        "login.LoginResponse": {
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string",
-                    "example": "eyJhbGciOijiwzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIl0sImV4cCI6MTc0NTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg"
+                    "example": "eyJhbGciOijiwzIJNviIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIsdvssImV4cCI6MTMIJNTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg"
+                }
+            }
+        },
+        "login.VerifyResponse": {
+            "type": "object",
+            "properties": {
+                "verify": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         }

@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
+	"feedo_back/middleware/user/login"
 )
 
 
@@ -15,6 +16,7 @@ func User(r *gin.Engine) {
 	userGroup := r.Group("/user")
 	{
 		userGroup.GET("/", RootUser)
-		userGroup.POST("/login", LoginHandler)
+		userGroup.POST("/login", login.LoginHandler)
+		userGroup.POST("/verify", login.VerifyHandler)
 	}
 }
