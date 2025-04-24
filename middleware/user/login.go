@@ -6,7 +6,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// LoginHandler handles user login and returns a JWT token
+type LoginResponse struct {
+    Token string `json:"token" example:"eyJhbGciOijiwzIJNviIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIsdvssImV4cCI6MTMIJNTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg"`
+}
+
+// User login endpoint
+// @Summary User login endpoint
+// @Description This is a user login endpoint
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param username body string true "Username"
+// @Param password body string true "Password"
+// @Success 200 {object} LoginResponse "Returns JWT token"
+// @Router /user/login [post]
 func LoginHandler(c *gin.Context) {
 	// Parse login credentials from request body
 	var credentials struct {
