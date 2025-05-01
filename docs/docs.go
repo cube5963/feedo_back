@@ -30,8 +30,8 @@ const docTemplate = `{
                 "summary": "User login endpoint",
                 "parameters": [
                     {
-                        "description": "Username",
-                        "name": "username",
+                        "description": "Email",
+                        "name": "email",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -53,6 +53,64 @@ const docTemplate = `{
                         "description": "Returns JWT token",
                         "schema": {
                             "$ref": "#/definitions/login.LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Register a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "User Registration",
+                "parameters": [
+                    {
+                        "description": "Name",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User registration success",
+                        "schema": {
+                            "$ref": "#/definitions/register.UserResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "User registration failure",
+                        "schema": {
+                            "$ref": "#/definitions/register.ErrorResponse"
                         }
                     }
                 }
@@ -109,6 +167,24 @@ const docTemplate = `{
                 "verify": {
                     "type": "boolean",
                     "example": true
+                }
+            }
+        },
+        "register.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Failed to register user"
+                }
+            }
+        },
+        "register.UserResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "User registered successfully"
                 }
             }
         }

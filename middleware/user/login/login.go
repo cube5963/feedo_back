@@ -4,6 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
+
+	"feedo_back/middleware/db"
+	"feedo_back/middleware/db/userdb"
 )
 
 type LoginResponse struct {
@@ -16,14 +20,14 @@ type LoginResponse struct {
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param username body string true "Username"
+// @Param email body string true "Email"
 // @Param password body string true "Password"
 // @Success 200 {object} LoginResponse "Returns JWT token"
 // @Router /user/login [post]
 func LoginHandler(c *gin.Context) {
 	// Parse login credentials from request body
 	var credentials struct {
-		Username string `json:"username"`
+		Email string `json:"email"`
 		Password string `json:"password"`
 	}
 	if err := c.ShouldBindJSON(&credentials); err != nil {
@@ -31,9 +35,21 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
+	database, err := db.GetDB()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database"})
+		return
+	}
+
+	success, userPassword := userdb.LoginUser(database, credentials.Email)
 	// Authenticate user (this is a placeholder, replace with real authentication logic)
-	if credentials.Username != "admin" || credentials.Password != "password" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+	if !success {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
+		return
+	}
+	
+	if err := bcrypt.CompareHashAndPassword([]byte(userPassword), []byte(credentials.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 

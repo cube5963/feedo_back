@@ -12,6 +12,18 @@ definitions:
         example: true
         type: boolean
     type: object
+  register.ErrorResponse:
+    properties:
+      error:
+        example: Failed to register user
+        type: string
+    type: object
+  register.UserResponse:
+    properties:
+      message:
+        example: User registered successfully
+        type: string
+    type: object
 host: localhost:5000
 info:
   contact: {}
@@ -25,9 +37,9 @@ paths:
       - application/json
       description: This is a user login endpoint
       parameters:
-      - description: Username
+      - description: Email
         in: body
-        name: username
+        name: email
         required: true
         schema:
           type: string
@@ -45,6 +57,44 @@ paths:
           schema:
             $ref: '#/definitions/login.LoginResponse'
       summary: User login endpoint
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: Name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User registration success
+          schema:
+            $ref: '#/definitions/register.UserResponse'
+        "500":
+          description: User registration failure
+          schema:
+            $ref: '#/definitions/register.ErrorResponse'
+      summary: User Registration
       tags:
       - user
   /user/verify:
