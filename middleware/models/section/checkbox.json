@@ -1,0 +1,5 @@
+{
+    "type": "checkbox",
+    "column": 3,
+    "options": ["選択肢1", "選択肢2", "選択肢3"]
+}

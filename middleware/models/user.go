@@ -14,7 +14,7 @@ type UserDB struct {
 }
 
 type UserRequest struct {
-	Name	 string `json:"name" example:"田所浩二"`
+	Name     string `json:"name" example:"田所浩二"`
 	Email    string `json:"email" example:"example@example.com"`
 	Password string `json:"password" example:"password"`
 }
