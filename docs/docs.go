@@ -15,6 +15,46 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/form/create": {
+            "post": {
+                "description": "Create a new form",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "form"
+                ],
+                "summary": "Create Form",
+                "parameters": [
+                    {
+                        "description": "Form data",
+                        "name": "form",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateFormRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Form creation success",
+                        "schema": {
+                            "$ref": "#/definitions/create.FormResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Form creation failure",
+                        "schema": {
+                            "$ref": "#/definitions/create.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "This is a user login endpoint",
@@ -152,6 +192,24 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "create.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Failed to create form"
+                }
+            }
+        },
+        "create.FormResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Form created successfully"
+                }
+            }
+        },
         "login.LoginResponse": {
             "type": "object",
             "properties": {
@@ -169,6 +227,66 @@ const docTemplate = `{
                     "example": true
                 }
             }
+        },
+        "models.CreateFormRequest": {
+            "type": "object",
+            "properties": {
+                "form_name": {
+                    "type": "string",
+                    "example": "アンケートフォーム"
+                },
+                "img_id": {
+                    "type": "string",
+                    "example": "1234567890"
+                },
+                "sections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CreateSectionRequest"
+                    }
+                }
+            }
+        },
+        "models.CreateSectionRequest": {
+            "type": "object",
+            "properties": {
+                "section_desc": {
+                    "description": "encoding base64 from json",
+                    "type": "string",
+                    "example": "質問の中身"
+                },
+                "section_name": {
+                    "type": "string",
+                    "example": "質問1"
+                },
+                "section_type": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.FormType"
+                        }
+                    ],
+                    "example": "radio"
+                }
+            }
+        },
+        "models.FormType": {
+            "type": "string",
+            "enum": [
+                "radio",
+                "checkbox",
+                "text",
+                "star",
+                "two_choice",
+                "slider"
+            ],
+            "x-enum-varnames": [
+                "FormTypeRadio",
+                "FormTypeCheckbox",
+                "FormTypeText",
+                "FormTypeStar",
+                "FormTypeTwoChoice",
+                "FormTypeSlider"
+            ]
         },
         "register.ErrorResponse": {
             "type": "object",

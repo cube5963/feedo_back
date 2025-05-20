@@ -46,13 +46,13 @@ type AnswerDB struct {
 }
 
 type CreateFormRequest struct {
-	FormName string `json:"form_name" example:"アンケートフォーム"`
-	ImgID    string `json:"img_id" example:"1234567890"`
+	FormName string                 `json:"form_name" example:"アンケートフォーム"`
+	ImgID    string                 `json:"img_id" example:"1234567890"`
 	Sections []CreateSectionRequest `json:"sections"`
 }
 
 type CreateSectionRequest struct {
-	SectionName  string   `json:"section_name" example:"質問1"`
-	SectionType  FormType `json:"section_type" example:"radio"`
-	SectionDesc  string   `json:"section_desc" example:"質問の中身"` // encoding base64 from json
+	SectionName string   `json:"section_name" example:"質問1"`
+	SectionType FormType `json:"section_type" example:"radio"`
+	SectionDesc string   `json:"section_desc" example:"質問の中身"` // encoding base64 from json
 }
