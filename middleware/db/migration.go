@@ -9,5 +9,8 @@ import (
 func Migrate(database *gorm.DB) {
 	database.AutoMigrate(
 		&models.UserDB{},
+		&models.FormDB{},
+		&models.SectionDB{},
+		&models.AnswerDB{},
 	)
 }
