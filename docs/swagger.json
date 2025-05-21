@@ -37,13 +37,13 @@
                     "200": {
                         "description": "Form creation success",
                         "schema": {
-                            "$ref": "#/definitions/create.FormResponse"
+                            "$ref": "#/definitions/models.SuccessResponse"
                         }
                     },
                     "500": {
                         "description": "Form creation failure",
                         "schema": {
-                            "$ref": "#/definitions/create.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -64,29 +64,38 @@
                 "summary": "User login endpoint",
                 "parameters": [
                     {
-                        "description": "Email",
-                        "name": "email",
+                        "description": "User login data",
+                        "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Password",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.UserLoginRequest"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Returns JWT token",
+                        "description": "ログイン成功",
                         "schema": {
-                            "$ref": "#/definitions/login.LoginResponse"
+                            "$ref": "#/definitions/models.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエスト不正",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "認証失敗",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバーエラー",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -107,44 +116,32 @@
                 "summary": "User Registration",
                 "parameters": [
                     {
-                        "description": "Name",
-                        "name": "name",
+                        "description": "User data",
+                        "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Email",
-                        "name": "email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Password",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.UserRequest"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "User registration success",
+                        "description": "ユーザー登録成功",
                         "schema": {
-                            "$ref": "#/definitions/register.UserResponse"
+                            "$ref": "#/definitions/models.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエスト不正",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "User registration failure",
+                        "description": "ユーザー登録失敗",
                         "schema": {
-                            "$ref": "#/definitions/register.ErrorResponse"
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     }
                 }
@@ -165,12 +162,12 @@
                 "summary": "User verify endpoint",
                 "parameters": [
                     {
-                        "description": "Token",
-                        "name": "token",
+                        "description": "User verify data",
+                        "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.UserVerifyRequest"
                         }
                     }
                 ],
@@ -178,7 +175,7 @@
                     "200": {
                         "description": "Returns verification result",
                         "schema": {
-                            "$ref": "#/definitions/login.VerifyResponse"
+                            "$ref": "#/definitions/models.VerifyResponse"
                         }
                     }
                 }
@@ -186,42 +183,6 @@
         }
     },
     "definitions": {
-        "create.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string",
-                    "example": "Failed to create form"
-                }
-            }
-        },
-        "create.FormResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Form created successfully"
-                }
-            }
-        },
-        "login.LoginResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "example": "eyJhbGciOijiwzIJNviIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIsdvssImV4cCI6MTMIJNTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg"
-                }
-            }
-        },
-        "login.VerifyResponse": {
-            "type": "object",
-            "properties": {
-                "verify": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "models.CreateFormRequest": {
             "type": "object",
             "properties": {
@@ -232,6 +193,10 @@
                 "img_id": {
                     "type": "string",
                     "example": "1234567890"
+                },
+                "jwt": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
                 },
                 "sections": {
                     "type": "array",
@@ -263,6 +228,15 @@
                 }
             }
         },
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "error message"
+                }
+            }
+        },
         "models.FormType": {
             "type": "string",
             "enum": [
@@ -282,21 +256,69 @@
                 "FormTypeSlider"
             ]
         },
-        "register.ErrorResponse": {
+        "models.LoginResponse": {
             "type": "object",
             "properties": {
-                "error": {
+                "token": {
                     "type": "string",
-                    "example": "Failed to register user"
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhbGciOiJIUzI1NiIsInN1YiI6InVzZXIiLCJhdWQiOlsiYXV0aWVuY2UiXSwiaWF0IjoxNzQ1NDY3MjgzLCJleHBpcmF0aW9uIjoxNzQ1NDY3MjgzLCJqdGkiOiJpZCJ9.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg"
                 }
             }
         },
-        "register.UserResponse": {
+        "models.SuccessResponse": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string",
-                    "example": "User registered successfully"
+                    "example": "success message"
+                }
+            }
+        },
+        "models.UserLoginRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "models.UserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "田所浩二"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "models.UserVerifyRequest": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhbGciOiJIUzI1NiIsInN1YiI6InVzZXIiLCJhdWQiOlsiYXV0aWVuY2UiXSwiaWF0IjoxNzQ1NDY3MjgzLCJleHBpcmF0aW9uIjoxNzQ1NDY3MjgzLCJqdGkiOiJpZCJ9.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg"
+                }
+            }
+        },
+        "models.VerifyResponse": {
+            "type": "object",
+            "properties": {
+                "verify": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         }

@@ -1,29 +1,5 @@
 basePath: /
 definitions:
-  create.ErrorResponse:
-    properties:
-      error:
-        example: Failed to create form
-        type: string
-    type: object
-  create.FormResponse:
-    properties:
-      message:
-        example: Form created successfully
-        type: string
-    type: object
-  login.LoginResponse:
-    properties:
-      token:
-        example: eyJhbGciOijiwzIJNviIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhsIiOiJzdWJqZWN0IiwiYXVkIjpbImF1ZGllbmNlIsdvssImV4cCI6MTMIJNTQ2NzM0MywibmJmIjoxNzQ1NhtbMjgzLCJpYXQiOjE3NDU0NjcyODMsImp0aSI6ImlkIn0.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg
-        type: string
-    type: object
-  login.VerifyResponse:
-    properties:
-      verify:
-        example: true
-        type: boolean
-    type: object
   models.CreateFormRequest:
     properties:
       form_name:
@@ -31,6 +7,9 @@ definitions:
         type: string
       img_id:
         example: "1234567890"
+        type: string
+      jwt:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
         type: string
       sections:
         items:
@@ -51,6 +30,12 @@ definitions:
         - $ref: '#/definitions/models.FormType'
         example: radio
     type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        example: error message
+        type: string
+    type: object
   models.FormType:
     enum:
     - radio
@@ -67,17 +52,50 @@ definitions:
     - FormTypeStar
     - FormTypeTwoChoice
     - FormTypeSlider
-  register.ErrorResponse:
+  models.LoginResponse:
     properties:
-      error:
-        example: Failed to register user
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhbGciOiJIUzI1NiIsInN1YiI6InVzZXIiLCJhdWQiOlsiYXV0aWVuY2UiXSwiaWF0IjoxNzQ1NDY3MjgzLCJleHBpcmF0aW9uIjoxNzQ1NDY3MjgzLCJqdGkiOiJpZCJ9.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg
         type: string
     type: object
-  register.UserResponse:
+  models.SuccessResponse:
     properties:
       message:
-        example: User registered successfully
+        example: success message
         type: string
+    type: object
+  models.UserLoginRequest:
+    properties:
+      email:
+        example: example@example.com
+        type: string
+      password:
+        example: password
+        type: string
+    type: object
+  models.UserRequest:
+    properties:
+      email:
+        example: example@example.com
+        type: string
+      name:
+        example: 田所浩二
+        type: string
+      password:
+        example: password
+        type: string
+    type: object
+  models.UserVerifyRequest:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIiLCJhbGciOiJIUzI1NiIsInN1YiI6InVzZXIiLCJhdWQiOlsiYXV0aWVuY2UiXSwiaWF0IjoxNzQ1NDY3MjgzLCJleHBpcmF0aW9uIjoxNzQ1NDY3MjgzLCJqdGkiOiJpZCJ9.dxgM6uH2F8ZglV_xcPhjCRnOSJBYq9oeS1TDLkLg_eg
+        type: string
+    type: object
+  models.VerifyResponse:
+    properties:
+      verify:
+        example: true
+        type: boolean
     type: object
 host: localhost:5000
 info:
@@ -104,11 +122,11 @@ paths:
         "200":
           description: Form creation success
           schema:
-            $ref: '#/definitions/create.FormResponse'
+            $ref: '#/definitions/models.SuccessResponse'
         "500":
           description: Form creation failure
           schema:
-            $ref: '#/definitions/create.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       summary: Create Form
       tags:
       - form
@@ -118,25 +136,31 @@ paths:
       - application/json
       description: This is a user login endpoint
       parameters:
-      - description: Email
+      - description: User login data
         in: body
-        name: email
+        name: user
         required: true
         schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/models.UserLoginRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: Returns JWT token
+          description: ログイン成功
           schema:
-            $ref: '#/definitions/login.LoginResponse'
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: リクエスト不正
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: 認証失敗
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: サーバーエラー
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
       summary: User login endpoint
       tags:
       - user
@@ -146,35 +170,27 @@ paths:
       - application/json
       description: Register a new user
       parameters:
-      - description: Name
+      - description: User data
         in: body
-        name: name
+        name: user
         required: true
         schema:
-          type: string
-      - description: Email
-        in: body
-        name: email
-        required: true
-        schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/models.UserRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: User registration success
+          description: ユーザー登録成功
           schema:
-            $ref: '#/definitions/register.UserResponse'
+            $ref: '#/definitions/models.SuccessResponse'
+        "400":
+          description: リクエスト不正
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
         "500":
-          description: User registration failure
+          description: ユーザー登録失敗
           schema:
-            $ref: '#/definitions/register.ErrorResponse'
+            $ref: '#/definitions/models.ErrorResponse'
       summary: User Registration
       tags:
       - user
@@ -184,19 +200,19 @@ paths:
       - application/json
       description: This is a user verify endpoint
       parameters:
-      - description: Token
+      - description: User verify data
         in: body
-        name: token
+        name: user
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/models.UserVerifyRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Returns verification result
           schema:
-            $ref: '#/definitions/login.VerifyResponse'
+            $ref: '#/definitions/models.VerifyResponse'
       summary: User verify endpoint
       tags:
       - user

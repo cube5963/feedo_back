@@ -49,10 +49,18 @@ type CreateFormRequest struct {
 	FormName string                 `json:"form_name" example:"アンケートフォーム"`
 	ImgID    string                 `json:"img_id" example:"1234567890"`
 	Sections []CreateSectionRequest `json:"sections"`
+	Jwt      string                 `json:"jwt" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"`
 }
 
 type CreateSectionRequest struct {
 	SectionName string   `json:"section_name" example:"質問1"`
 	SectionType FormType `json:"section_type" example:"radio"`
 	SectionDesc string   `json:"section_desc" example:"質問の中身"` // encoding base64 from json
+}
+
+type EditFormRootRequest struct {
+	FormID   uint   `json:"form_id" example:"1"`
+	FormName string `json:"form_name" example:"アンケートフォーム"`
+	ImgID    string `json:"img_id" example:"1234567890"`
+	Jwt      string `json:"jwt" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"`
 }

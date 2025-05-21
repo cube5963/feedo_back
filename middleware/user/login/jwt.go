@@ -32,7 +32,7 @@ func generate() (string, error) {
 	return tokenString, nil
 }
 
-func verify(tokenString string) bool {
+func Verify(tokenString string) bool {
     token, err := jwt.ParseWithClaims(
         tokenString,
         &jwt.RegisteredClaims{},

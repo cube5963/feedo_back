@@ -10,64 +10,53 @@ import (
 	"feedo_back/middleware/db/userdb"
 )
 
-type UserResponse struct {
-    Message string `json:"message" example:"User registered successfully"`
-}
-
-type ErrorResponse struct {
-    Error string `json:"error" example:"Failed to register user"`
-}
-
 // User register endpoint
 // @Summary User Registration
 // @Description Register a new user
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param name body string true "Name"
-// @Param email body string true "Email"
-// @Param password body string true "Password"
-// @Success 200 {object} UserResponse "User registration success"
-// @Failure 500 {object} ErrorResponse "User registration failure"
+// @Param user body models.UserRequest true "User data"
+// @Success 200 {object} models.SuccessResponse "ユーザー登録成功"
+// @Failure 400 {object} models.ErrorResponse "リクエスト不正"
+// @Failure 500 {object} models.ErrorResponse "ユーザー登録失敗"
 // @Router /user/register [post]
 func RegisterHandler(c *gin.Context) {
-	var credentials struct {
+	/*var credentials struct {
 		Name string `json:"name"`
 		Email string `json:"email"`
 		Password string `json:"password"`
-	}
+	}*/
+
+	var credentials models.UserRequest
 
 	if err := c.ShouldBindJSON(&credentials); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		//c.JSON(http.StatusBadRequest, models.ErrorResponse{"Invalid request payload"})
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{Error: "invalid request payload"})
 		return
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(credentials.Password), bcrypt.DefaultCost)
 	if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
+        c.JSON(http.StatusInternalServerError, models.ErrorResponse{Error:"failed to hash password"})
         return
     }
 
-	// Initialize user variable
-	user := models.UserRequest{
-		Name:     credentials.Name,
-		Email:    credentials.Email,
-		Password: string(hashedPassword),
-	}
+	credentials.Password = string(hashedPassword)
 	
 	database, err := db.GetDB()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database"})
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{Error: "failed to connect to the database"})
 		return
 	}
 
 	// Attempt to create the user in the database
-	success := userdb.RegisterUser(database, &user)
+	success := userdb.RegisterUser(database, &credentials)
 
 	// Record the result of the operation
 	if success {
-		c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
+		c.JSON(http.StatusOK, models.SuccessResponse{Message: "User registered successfully"})
 	} else {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{Error: "Failed to register user"})
 	}
 }

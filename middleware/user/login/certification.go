@@ -1,14 +1,12 @@
 package login
 
 import (
+	"feedo_back/middleware/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type VerifyResponse struct {
-	Verify bool `json:"verify" example:"true"`
-}
 
 // User verify endpoint
 // @Summary User verify endpoint
@@ -16,18 +14,20 @@ type VerifyResponse struct {
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param token body string true "Token"
-// @Success 200 {object} VerifyResponse "Returns verification result"
+// @Param user body models.UserVerifyRequest true "User verify data"
+// @Success 200 {object} models.VerifyResponse "Returns verification result"
 // @Router /user/verify [post]
 func VerifyHandler(c *gin.Context) {
-	var credentials struct {
+	/*var credentials struct {
 		Token string `json:"token"`
-	}
+	}*/
+
+	var credentials models.UserVerifyRequest
 	
 	if err := c.ShouldBindJSON(&credentials); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{Error: "Invalid request payload"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"verify": verify(credentials.Token)})
+	c.JSON(http.StatusOK, models.VerifyResponse{Verify: Verify(credentials.Token)})
 }
