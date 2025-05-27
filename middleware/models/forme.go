@@ -64,3 +64,10 @@ type EditFormRootRequest struct {
 	ImgID    string `json:"img_id" example:"1234567890"`
 	Jwt      string `json:"jwt" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"`
 }
+
+type CreateAnswerRequest struct {
+	FormID    uint   `json:"form_id" example:"1"`
+	SectionID uint   `json:"section_id" example:"1"`
+	Answer    string `json:"answer" example:"回答内容"`
+	Jwt       string `json:"jwt" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"`
+}
